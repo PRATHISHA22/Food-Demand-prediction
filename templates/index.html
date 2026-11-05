@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Food Demand Predictor</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <h1>🍱 Food Demand Predictor</h1>
+
+        <p>
+            Random Forest Classification Model
+        </p>
+
+    </div>
+
+
+
+    <!-- MAIN CARD -->
+
+    <div class="card">
+
+
+        <h2>Enter Food Details</h2>
+
+        <p class="subtitle">
+            Enter the details below to predict food demand.
+        </p>
+
+
+        <form action="/predict"
+              method="POST">
+
+
+            <div class="form-grid">
+
+
+                <!-- ID -->
+
+                <div class="input-group">
+
+                    <label>ID</label>
+
+                    <input
+                        type="number"
+                        name="id"
+                        placeholder="Enter ID"
+                        required>
+
+                </div>
+
+
+
+                <!-- WEEK -->
+
+                <div class="input-group">
+
+                    <label>Week</label>
+
+                    <input
+                        type="number"
+                        name="week"
+                        placeholder="Enter week (1-145)"
+                        min="1"
+                        max="145"
+                        required>
+
+                </div>
+
+
+
+                <!-- CENTER ID -->
+
+                <div class="input-group">
+
+                    <label>Center ID</label>
+
+                    <input
+                        type="number"
+                        name="center_id"
+                        placeholder="Enter Center ID"
+                        required>
+
+                </div>
+
+
+
+                <!-- MEAL ID -->
+
+                <div class="input-group">
+
+                    <label>Meal ID</label>
+
+                    <input
+                        type="number"
+                        name="meal_id"
+                        placeholder="Enter Meal ID"
+                        required>
+
+                </div>
+
+
+
+                <!-- CHECKOUT PRICE -->
+
+                <div class="input-group">
+
+                    <label>Checkout Price</label>
+
+                    <input
+                        type="number"
+                        step="0.01"
+                        name="checkout_price"
+                        placeholder="Enter checkout price"
+                        required>
+
+                </div>
+
+
+
+                <!-- BASE PRICE -->
+
+                <div class="input-group">
+
+                    <label>Base Price</label>
+
+                    <input
+                        type="number"
+                        step="0.01"
+                        name="base_price"
+                        placeholder="Enter base price"
+                        required>
+
+                </div>
+
+
+
+                <!-- EMAILER -->
+
+                <div class="input-group">
+
+                    <label>
+                        Emailer for Promotion
+                    </label>
+
+                    <select
+                        name="emailer_for_promotion"
+                        required>
+
+                        <option value="">
+                            Select
+                        </option>
+
+                        <option value="0">
+                            No
+                        </option>
+
+                        <option value="1">
+                            Yes
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- HOMEPAGE FEATURED -->
+
+                <div class="input-group">
+
+                    <label>
+                        Homepage Featured
+                    </label>
+
+                    <select
+                        name="homepage_featured"
+                        required>
+
+                        <option value="">
+                            Select
+                        </option>
+
+                        <option value="0">
+                            No
+                        </option>
+
+                        <option value="1">
+                            Yes
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- CATEGORY -->
+
+                <div class="input-group">
+
+                    <label>Category</label>
+
+                    <select
+                        name="category"
+                        required>
+
+                        <option value="">
+                            Select Category
+                        </option>
+
+                        {% for category in categories %}
+
+                        <option value="{{ category }}">
+                            {{ category }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- CUISINE -->
+
+                <div class="input-group">
+
+                    <label>Cuisine</label>
+
+                    <select
+                        name="cuisine"
+                        required>
+
+                        <option value="">
+                            Select Cuisine
+                        </option>
+
+                        {% for cuisine in cuisines %}
+
+                        <option value="{{ cuisine }}">
+                            {{ cuisine }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- CITY CODE -->
+
+                <div class="input-group">
+
+                    <label>City Code</label>
+
+                    <input
+                        type="number"
+                        name="city_code"
+                        placeholder="Enter City Code"
+                        required>
+
+                </div>
+
+
+
+                <!-- REGION CODE -->
+
+                <div class="input-group">
+
+                    <label>Region Code</label>
+
+                    <input
+                        type="number"
+                        name="region_code"
+                        placeholder="Enter Region Code"
+                        required>
+
+                </div>
+
+
+
+                <!-- CENTER TYPE -->
+
+                <div class="input-group">
+
+                    <label>Center Type</label>
+
+                    <select
+                        name="center_type"
+                        required>
+
+                        <option value="">
+                            Select Center Type
+                        </option>
+
+                        {% for center_type in center_types %}
+
+                        <option value="{{ center_type }}">
+                            {{ center_type }}
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+
+
+                <!-- OP AREA -->
+
+                <div class="input-group">
+
+                    <label>Operational Area</label>
+
+                    <input
+                        type="number"
+                        step="0.01"
+                        name="op_area"
+                        placeholder="Enter operational area"
+                        required>
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- BUTTON -->
+
+            <button
+                type="submit"
+                class="predict-btn">
+
+                🔮 Predict Food Demand
+
+            </button>
+
+
+        </form>
+
+
+    </div>
+
+
+
+    <!-- RESULT -->
+
+    {% if submitted %}
+
+    <div class="result-card">
+
+        <h2>Prediction Result</h2>
+
+        <div class="prediction">
+
+            {{ prediction }}
+
+        </div>
+
+
+        {% if probability is not none %}
+
+        <p class="confidence">
+
+            Model Confidence:
+            <strong>
+                {{ probability }}%
+            </strong>
+
+        </p>
+
+        {% endif %}
+
+
+        <div class="legend">
+
+            <span>🟢 Low Demand</span>
+
+            <span>🟡 Medium Demand</span>
+
+            <span>🔴 High Demand</span>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+
+    <!-- ERROR -->
+
+    {% if error %}
+
+    <div class="error-card">
+
+        <h3>⚠️ Error</h3>
+
+        <p>
+            {{ error }}
+        </p>
+
+    </div>
+
+    {% endif %}
+
+
+
+    <!-- FOOTER -->
+
+    <div class="footer">
+
+        <p>
+            Food Demand Prediction using Random Forest
+        </p>
+
+    </div>
+
+
+</div>
+
+
+</body>
+
+</html>
